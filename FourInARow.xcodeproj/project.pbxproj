@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5D2960321FB321FF0078C231 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2960311FB321FF0078C231 /* AppDelegate.swift */; };
-		5D2960341FB321FF0078C231 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2960331FB321FF0078C231 /* ViewController.swift */; };
+		5D2960341FB321FF0078C231 /* BattleFieldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2960331FB321FF0078C231 /* BattleFieldViewController.swift */; };
 		5D2960371FB321FF0078C231 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D2960351FB321FF0078C231 /* Main.storyboard */; };
 		5D2960391FB321FF0078C231 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D2960381FB321FF0078C231 /* Assets.xcassets */; };
 		5D29603C1FB321FF0078C231 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D29603A1FB321FF0078C231 /* LaunchScreen.storyboard */; };
@@ -17,7 +17,7 @@
 /* Begin PBXFileReference section */
 		5D29602E1FB321FF0078C231 /* FourInARow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FourInARow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D2960311FB321FF0078C231 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5D2960331FB321FF0078C231 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5D2960331FB321FF0078C231 /* BattleFieldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleFieldViewController.swift; sourceTree = "<group>"; };
 		5D2960361FB321FF0078C231 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5D2960381FB321FF0078C231 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D29603B1FB321FF0078C231 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,14 +54,22 @@
 		5D2960301FB321FF0078C231 /* FourInARow */ = {
 			isa = PBXGroup;
 			children = (
-				5D2960311FB321FF0078C231 /* AppDelegate.swift */,
-				5D2960331FB321FF0078C231 /* ViewController.swift */,
+				5D2960431FB3229F0078C231 /* Supporting Files */,
+				5D2960331FB321FF0078C231 /* BattleFieldViewController.swift */,
 				5D2960351FB321FF0078C231 /* Main.storyboard */,
+			);
+			path = FourInARow;
+			sourceTree = "<group>";
+		};
+		5D2960431FB3229F0078C231 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5D2960311FB321FF0078C231 /* AppDelegate.swift */,
 				5D2960381FB321FF0078C231 /* Assets.xcassets */,
 				5D29603A1FB321FF0078C231 /* LaunchScreen.storyboard */,
 				5D29603D1FB321FF0078C231 /* Info.plist */,
 			);
-			path = FourInARow;
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,7 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D2960341FB321FF0078C231 /* ViewController.swift in Sources */,
+				5D2960341FB321FF0078C231 /* BattleFieldViewController.swift in Sources */,
 				5D2960321FB321FF0078C231 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,7 +284,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G9UHR5NE37;
-				INFOPLIST_FILE = FourInARow/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/FourInARow/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ankis.FourInARow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -291,7 +299,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G9UHR5NE37;
-				INFOPLIST_FILE = FourInARow/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/FourInARow/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ankis.FourInARow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
