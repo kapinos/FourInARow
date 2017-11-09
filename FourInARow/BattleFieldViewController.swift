@@ -71,8 +71,8 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
         configureTapGestureRecognizer()
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         configureGeometryParameters()
     }
@@ -86,7 +86,7 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
         
         // calculate amount of rows from the balls size
         let amountRows = (self.imageView.bounds.height - Sizes.Inset) / (Sizes.BallSize + Sizes.Inset)
-        print("amountRows \(amountRows)")
+        print("amountRows: \(amountRows)")
         Sizes.ROWS = Int(floor(amountRows))
         
         print("ballSize = \(Sizes.BallSize), rows = \(Sizes.ROWS)\nwidth=\(self.imageView.bounds.width), height=\(self.imageView.bounds.height)")
@@ -126,8 +126,7 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
             arrayBallViews[row] = arrBallViews
         }
     }
-    
-    
+        
     func checkTouch(_ touchPoint: CGPoint) {
         
         print("x: \(touchPoint.x), y: \(touchPoint.y)")
@@ -135,14 +134,14 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
         for row in 0..<Sizes.ROWS {
             for col in 0..<Sizes.COLS {
                 
-                let rect = CGRect(origin: touchPoint, size: CGSize(width: Sizes.BallSize, height: Sizes.BallSize))
-
+                let rect = CGRect(origin: arrayBalls[row][col].point, size: CGSize(width: Sizes.BallSize, height: Sizes.BallSize))
+                
                 // find the position of ball for tap
                 if !rect.contains(touchPoint) {
                     continue
                 } else {
                     let rowForSet = getLastFreeRow(tappedRow: row, tappedCol: col)
-            
+                    
                     arrayBallViews[rowForSet][col].player = Player.first
                     
                     let ball = arrayBallViews[rowForSet][col].ball
