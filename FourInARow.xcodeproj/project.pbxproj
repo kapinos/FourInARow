@@ -12,6 +12,8 @@
 		5D2960371FB321FF0078C231 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D2960351FB321FF0078C231 /* Main.storyboard */; };
 		5D2960391FB321FF0078C231 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D2960381FB321FF0078C231 /* Assets.xcassets */; };
 		5D29603C1FB321FF0078C231 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D29603A1FB321FF0078C231 /* LaunchScreen.storyboard */; };
+		5D2DF15F1FB3913F00CA8B69 /* BallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D2DF15E1FB3913F00CA8B69 /* BallView.xib */; };
+		5D2DF1631FB39A2B00CA8B69 /* BallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DF1621FB39A2B00CA8B69 /* BallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		5D2960381FB321FF0078C231 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D29603B1FB321FF0078C231 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D29603D1FB321FF0078C231 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D2DF15E1FB3913F00CA8B69 /* BallView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BallView.xib; sourceTree = "<group>"; };
+		5D2DF1621FB39A2B00CA8B69 /* BallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +43,7 @@
 			isa = PBXGroup;
 			children = (
 				5D2960301FB321FF0078C231 /* FourInARow */,
+				5D2960431FB3229F0078C231 /* Supporting Files */,
 				5D29602F1FB321FF0078C231 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,9 +59,10 @@
 		5D2960301FB321FF0078C231 /* FourInARow */ = {
 			isa = PBXGroup;
 			children = (
-				5D2960431FB3229F0078C231 /* Supporting Files */,
 				5D2960331FB321FF0078C231 /* BattleFieldViewController.swift */,
 				5D2960351FB321FF0078C231 /* Main.storyboard */,
+				5D2DF15E1FB3913F00CA8B69 /* BallView.xib */,
+				5D2DF1621FB39A2B00CA8B69 /* BallView.swift */,
 			);
 			path = FourInARow;
 			sourceTree = "<group>";
@@ -134,6 +140,7 @@
 				5D29603C1FB321FF0078C231 /* LaunchScreen.storyboard in Resources */,
 				5D2960391FB321FF0078C231 /* Assets.xcassets in Resources */,
 				5D2960371FB321FF0078C231 /* Main.storyboard in Resources */,
+				5D2DF15F1FB3913F00CA8B69 /* BallView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D2DF1631FB39A2B00CA8B69 /* BallView.swift in Sources */,
 				5D2960341FB321FF0078C231 /* BattleFieldViewController.swift in Sources */,
 				5D2960321FB321FF0078C231 /* AppDelegate.swift in Sources */,
 			);
@@ -284,7 +292,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G9UHR5NE37;
-				INFOPLIST_FILE = "$(SRCROOT)/FourInARow/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ankis.FourInARow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -299,7 +307,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G9UHR5NE37;
-				INFOPLIST_FILE = "$(SRCROOT)/FourInARow/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ankis.FourInARow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
