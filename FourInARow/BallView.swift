@@ -20,13 +20,16 @@ class BallView: UIImageView {
     
         super.init(frame: .zero)
         self.contentMode = .scaleAspectFill
+        
+        self.setPlayer(player: player)//??
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func changePlayer(player: Player) {
+    func setPlayer(player: Player) {
         self.player = player
+        self.image = UIImage(named: player.rawValue)
     }
 }
