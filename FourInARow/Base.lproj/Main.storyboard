@@ -31,7 +31,17 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="8lh-gn-3Bn"/>
+                    <navigationItem key="navigationItem" id="8lh-gn-3Bn">
+                        <barButtonItem key="leftBarButtonItem" title="Count" id="1f9-cC-L0A"/>
+                        <barButtonItem key="rightBarButtonItem" title="New" id="XSy-fP-gZ2">
+                            <connections>
+                                <action selector="newGameTapped:" destination="BYZ-38-t0r" id="CbM-iW-xbW"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="countTurnes" destination="1f9-cC-L0A" id="fgu-cD-ah2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -40,7 +50,6 @@
         <!--Navigation Controller-->
         <scene sceneID="U11-uj-LwU">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Rzm-vS-x5j" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xsK-d7-L3g" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y9q-u8-g3Z">
@@ -52,6 +61,7 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="89t-Q4-FpK"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rzm-vS-x5j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="84" y="117"/>
         </scene>

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  BattleFieldViewController.swift
 //  FourInARow
 //
 //  Created by Anastasia on 11/8/17.
@@ -34,7 +34,7 @@ struct Ball {
 enum Player: String {
     case first  = "first"
     case second = "second"
-    case none   = ""
+    case none   = "none"
 }
 
 
@@ -46,20 +46,38 @@ struct Sizes {
     static let AmountBallsForWin    = 4
 }
 
+enum Directions {
+    case Vertical, Horizontal, DiagonalToRight, DiagonalToLeft
+}
+
 class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
 
     // MARK: - Properties
-    var arrayBallViews: [[BallView]] = []
-    var fieldView = UIView()
-    var isFirstPlayerTurn = true
+    private var arrayBallViews: [[BallView]] = []
+    private var fieldView = UIView()
+    private var isFirstPlayerTurn = true
+    private var countTurn: Int = 0 {
+        willSet {
+            self.countTurnes.title = newValue == 0 ? "" : "\(newValue)"
+        }
+    }
 
     // MARK: - IBOutlets
+    @IBOutlet weak var countTurnes: UIBarButtonItem!
+    
+    // MARk: - User Actions
+    @IBAction func newGameTapped(_ sender: UIBarButtonItem) {
+        createAlert(isSomeoneWin: false)
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.addSubview(fieldView)
+        
+        // show the turn in title NavBar
+        self.title = (isFirstPlayerTurn ? "Red" : "Blue") + " player"
         
         configureTapGestureRecognizer()
     }
@@ -73,106 +91,57 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //================================================================================================
     // Detect winner Logic
-    //-----------------------
-    // 1 variant
-    //-----------------------
-    private func checkForWin1(_ countTurn: Int) {
+    func checkByDirection(row: Int, col: Int, direction: Directions) {
+        var arraySumm = 0
         let currentPlayer: Player = isFirstPlayerTurn ? Player.first : Player.second
-        for row in 0..<Sizes.ROWS {
-            for col in 0..<Sizes.COLS {
-                if arrayBallViews[row][col].player != currentPlayer {
-                    continue
-                } else {
-                    print("turn: \(countTurn)")
-                    // →
-                    var arraySumm = 0
-                    for c in col..<Sizes.COLS {
-                        if arrayBallViews[row][c].player != currentPlayer {
-                            arraySumm = 0
-                            break
-                        } else {
-                            arraySumm += 1
-                            print("→ row:\(row) col:\(c) \(isFirstPlayerTurn ? "Red " : "Blue") \(arraySumm)")
-                            if isPlayerWin(currentSumm: arraySumm) { return }
-                        }
-                    }
-                    // ↓
-                    arraySumm = 0
-                    for r in row..<Sizes.ROWS {
-                        if arrayBallViews[r][col].player != currentPlayer {
-                            arraySumm = 0
-                            break
-                        } else {
-                            arraySumm += 1
-                            print("↓ row:\(r) col:\(col) \(isFirstPlayerTurn ? "Red " : "Blue") \(arraySumm)")
-                            if isPlayerWin(currentSumm: arraySumm) { return }
-                        }
-                    }
-                    // ↘
-                    arraySumm = 0
-                    for i in 0..<min(Sizes.ROWS,Sizes.COLS) {
-                        let c = col + i
-                        let r = row + i
-                        if !verifyCoordinate(row: r, col: c) {
-                            break
-                        }
-                        if arrayBallViews[r][c].player != currentPlayer {
-                            arraySumm = 0
-                            break
-                        } else {
-                            arraySumm += 1
-                            print("↘ row:\(r) col:\(c) \(isFirstPlayerTurn ? "Red " : "Blue") \(arraySumm)")
-                            if isPlayerWin(currentSumm: arraySumm) { return }
-                        }
-                    }
-                    // ↙
-                    arraySumm = 0
-                    for i in 0..<min(Sizes.ROWS,Sizes.COLS) {
-                        let c = col - i
-                        let r = row + i
-                        if !verifyCoordinate(row: r, col: c) {
-                            break
-                        }
-                        if arrayBallViews[r][c].player != currentPlayer {
-                            arraySumm = 0
-                            break
-                        } else {
-                            arraySumm += 1
-                            print("↙ row:\(r) col:\(c) \(isFirstPlayerTurn ? "Red " : "Blue") \(arraySumm)")
-                            if isPlayerWin(currentSumm: arraySumm) { return }
-                        }
-                    }
-                }
+
+        for i in -Sizes.AmountBallsForWin..<Sizes.AmountBallsForWin {
+            
+            var r = -1
+            var c = -1
+            
+            switch direction {
+            case .Vertical:
+                r = row + i
+                c = col
+            case .Horizontal:
+                r = row
+                c = col + i
+            case .DiagonalToRight:
+                r = row + i
+                c = col + i
+            case .DiagonalToLeft:
+                r = row + i
+                c = col - i
+            }
+            
+            if !isValidCoordinates(row: r, col: c) {
+                continue
+            }
+            if arrayBallViews[r][c].player != currentPlayer {
+                arraySumm = 0
+            } else {
+                arraySumm += 1
+                print("row:\(r) col:\(c) \(isFirstPlayerTurn ? "Red " : "Blue") \(arraySumm) \(direction)")
+                if isPlayerWin(currentSumm: arraySumm) { return }
             }
         }
     }
     
-    //-----------------------
-    // 2 variant
-    //-----------------------
-//    private func checkForWin2(_ countTurn: Int, _ row: Int, _ col: Int) {
-//        let currentPlayer: Player = isFirstPlayerTurn ? Player.first : Player.second
-//        // →
-//        let startCol = min(0, col - Sizes.AmountBallsForWin)
-//        let endCol   = min(Sizes.COLS, col + Sizes.AmountBallsForWin)
-//        var arraySumm = 0
-//        for c in startCol..<endCol {
-//            if arrayBallViews[row][c].player != currentPlayer {
-//                arraySumm = 0
-//            } else {
-//                arraySumm += 1
-//                print("→ row:\(row) col:\(c) \(isFirstPlayerTurn ? "Red " : "Blue") \(arraySumm)")
-//                if isPlayerWin(currentSumm: arraySumm) { return }
-//            }
-//
-//        }
-//        // ↓
-//        // ↘
-//        // ↙
-//
-//    }
+    private func checkForWin(_ countTurn: Int, row: Int, col: Int) {
+        print("turn: \(countTurn)")
+        // →
+        checkByDirection(row: row, col: col, direction: .Horizontal)
+        // ↓
+        checkByDirection(row: row, col: col, direction: .Vertical)
+        // ↘
+        checkByDirection(row: row, col: col, direction: .DiagonalToRight)
+        // ↙
+        checkByDirection(row: row, col: col, direction: .DiagonalToLeft)
+    }
+
     
-    func verifyCoordinate(row: Int, col: Int) -> Bool {
+    private func isValidCoordinates(row: Int, col: Int) -> Bool {
         if row < 0 || row >= Sizes.ROWS { return false }
         if col < 0 || col >= Sizes.COLS { return false }
         return true
@@ -180,40 +149,47 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private func isPlayerWin(currentSumm: Int) -> Bool {
         if currentSumm == Sizes.AmountBallsForWin {
-            createAlert()
+            createAlert(isSomeoneWin: true)
             return true
         }
         return false
     }
     
-    
-    
-    
-    
-    
-    //================================================================================================
-    // MARK: - Inner Methods
-    
-    private func createAlert() {
-        let nameWinner = (isFirstPlayerTurn ? "Red" : "Blue") + " player"
-        let alertController = UIAlertController(title: "Game over",
-                                                message: "\(nameWinner) win! Restart the game?",
+    var alertController: UIAlertController?
+    private func createAlert(isSomeoneWin: Bool) {
+        
+        guard alertController == nil else {
+            return
+        }
+        
+        var text = ""
+        if isSomeoneWin {
+            text =  (isFirstPlayerTurn ? "Red" : "Blue")  + " player win!"
+        }
+
+        alertController = UIAlertController(title: "Game over",
+                                                message: "\(text) Restart the game?",
             preferredStyle: .alert)
         
         // Create Ok button
         let okAction = UIAlertAction(title: "OK", style: .default) {
             (result: UIAlertAction) in self.restartGame()
         }
-        alertController.addAction(okAction)
+        alertController?.addAction(okAction)
         
+        // FIXME: Cancel
         // Create Cancel button
-        alertController.addAction(
+        alertController?.addAction(
             UIAlertAction(title: "Cancel", style: .cancel) {
                 (action: UIAlertAction!) in print("Cancel button tapped")
         })
-        self.present(alertController, animated: true, completion: nil)
+        self.present(alertController!, animated: true, completion: nil)
     }
 
+    
+    //================================================================================================
+    // MARK: - Inner Methods
+    
     // restart the game
     private func restartGame() {
         for row in 0..<Sizes.ROWS {
@@ -222,8 +198,10 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
                 ball.setPlayer(player: .none)
             }
         }
+        alertController = nil
         isFirstPlayerTurn = true
         countTurn = 0
+        self.title = (isFirstPlayerTurn ? "Red" : "Blue") + " player"
     }
     
     
@@ -241,13 +219,11 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
         let availableHeight = self.view.bounds.height - navBarHeight - statusBarHeight
         
         let amountRows = (availableHeight - Sizes.Inset) / (Sizes.BallSize + Sizes.Inset)
-        //print("amountRows: \(amountRows)")  // LOG
+
         Sizes.ROWS = Int(floor(amountRows))
         
         let size = CGSize(width: self.view.bounds.width,
                           height: CGFloat(Sizes.ROWS) * (Sizes.BallSize + Sizes.Inset) + Sizes.Inset)
-        
-        //print("self.view.height: \(self.view.bounds.height)\nnavBar: \(navBarHeight)\nstatusBar: \(statusBarHeight)\navailableHeight: \(availableHeight)\nsize.height: \(size.height)\nshift: \(shift)") // LOG
         
         fieldView.frame = CGRect(x: 0,
                                       y: statusBarHeight + navBarHeight + (availableHeight - size.height) / 2,
@@ -255,7 +231,6 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
                                       height: size.height)
         
         self.fieldView.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0)
-        //print("ballSize = \(Sizes.BallSize), rows = \(Sizes.ROWS)\nwidth=\(self.fieldView.bounds.width), height=\(self.fieldView.bounds.height)") // LOG
         configureBallsArray()
     }
     
@@ -295,40 +270,39 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     // implement user's tap on the field and adding the ball
-    var countTurn = 0
     private func handleTouch(_ touchPoint: CGPoint) {
-        
-        //print("x: \(touchPoint.x), y: \(touchPoint.y)") // LOG
         
         let col = Int(touchPoint.x / (CGFloat(Sizes.BallSize) + Sizes.Inset))
         let row = Int(touchPoint.y / (CGFloat(Sizes.BallSize) + Sizes.Inset))
         
-        //print("col: \(col), row: \(row)") // LOG
-
         // check if tap was outside the amount of ROWS/COLS
         if row >= Sizes.ROWS || col >= Sizes.COLS { return }
         
-        let rowForSet = getLastFreeRow(tappedRow: row, tappedCol: col)
+        guard let rowForSet = getLastFreeRow(tappedRow: row, tappedCol: col) else {
+            print("can't set")
+            return
+        }
 
         // show the ball on the field
         let ballView = arrayBallViews[rowForSet][col]
         
         ballView.setPlayer(player: isFirstPlayerTurn ? .first : .second)
         
-        //============================
         // check for winner
-        checkForWin1(countTurn)             // variant 1
-        //checkForWin2(countTurn, row, col) // variant 2
-        countTurn += 1
-        //============================
+        checkForWin(countTurn, row: rowForSet, col: col)
         
         // change the turn in the game
         isFirstPlayerTurn = !isFirstPlayerTurn
+        
+        // show the turn in title NavBar
+        self.title = (isFirstPlayerTurn ? "Red" : "Blue") + " player"
+        countTurn += 1
     }
 
     // find the row which ball should be set
-    private func getLastFreeRow(tappedRow: Int, tappedCol: Int) -> Int {
-        var rowForBall = tappedRow
+    private func getLastFreeRow(tappedRow: Int, tappedCol: Int) -> Int? {
+        
+        var rowForBall: Int? = nil
         
         for r in tappedRow ..< Sizes.ROWS {
             if arrayBallViews[r][tappedCol].player == .none {
