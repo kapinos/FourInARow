@@ -32,7 +32,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="8lh-gn-3Bn">
-                        <barButtonItem key="leftBarButtonItem" title="Count" id="1f9-cC-L0A"/>
+                        <barButtonItem key="leftBarButtonItem" id="1f9-cC-L0A"/>
                         <barButtonItem key="rightBarButtonItem" title="New" id="XSy-fP-gZ2">
                             <connections>
                                 <action selector="newGameTapped:" destination="BYZ-38-t0r" id="CbM-iW-xbW"/>
