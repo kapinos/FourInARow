@@ -175,26 +175,10 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
             print("can't set")
             return
         }
-
-        //=============================================================
-        let player: String = isFirstPlayerTurn ? "first" : "second"
-        let imageView = UIImageView(image: UIImage(named: player)!)
-        imageView.contentMode = .scaleAspectFill
-        let startX = arrayBallViews[rowForSet][col].ball.point.x
-        let startY = arrayBallViews[0][col].ball.point.y
-        imageView.frame = CGRect(x: startX, y: startY, width: Sizes.BallSize, height: Sizes.BallSize)
-        fieldView.addSubview(imageView)
-        let endPoint = arrayBallViews[rowForSet][col].ball.point
-        
-        UIView.animate(withDuration: 0.9, delay: 0.1, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
-            imageView.center = CGPoint(x: endPoint.x+Sizes.BallSize/2, y:endPoint.y+Sizes.BallSize/2 )  // Ending position of the ball
-        }, completion: nil)
         
         // show the ball on the field
-        // let ballView = arrayBallViews[rowForSet][col]
-        // ballView.setPlayer(player: isFirstPlayerTurn ? .first : .second)
-        //=============================================================
-        
+        let ballView = arrayBallViews[rowForSet][col]
+        ballView.setPlayer(player: isFirstPlayerTurn ? .first : .second)
         
         // check for winner
         checkForWin(countTurn, row: rowForSet, col: col)
