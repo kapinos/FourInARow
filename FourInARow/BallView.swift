@@ -21,7 +21,7 @@ class BallView: UIImageView {
         super.init(frame: .zero)
         self.contentMode = .scaleAspectFill
         
-        self.setPlayer(player: player)//??
+        self.setPlayer(player: player)
     }
     
     required init?(coder aDecoder: NSCoder) {
