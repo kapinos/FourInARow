@@ -63,12 +63,25 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
             self.countTurnes.title = newValue == 0 ? "" : "\(newValue)"
         }
     }
+    
+    // for animating balls
+    private var animator: UIDynamicAnimator!
+    private var gravity: UIGravityBehavior!
+    private var collision: UICollisionBehavior!
+    
+    fileprivate var animationArray: [UIView] = []
+    fileprivate var isAnimationInProgress = false
+    fileprivate var currentTurn: (row: Int, col: Int, player: Player) = (row: -1, col: -1, player: .none)
 
     // MARK: - IBOutlets
     @IBOutlet private weak var countTurnes: UIBarButtonItem!
     
     // MARK: - User Actions
     @IBAction private func newGameTapped(_ sender: UIBarButtonItem) {
+        if isEndOfTheGame {
+            restartTheGame()
+            return
+        }
         createAlert("")
     }
     
@@ -157,13 +170,10 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
         handleTouch(touchPoint)
     }
     
-    var animator: UIDynamicAnimator!
-    var gravity: UIGravityBehavior!
-    var collision: UICollisionBehavior!
-    
     // implement user's tap on the field and adding the ball
     private func handleTouch(_ touchPoint: CGPoint) {
         if isEndOfTheGame { return }
+        if isAnimationInProgress { dynamicAnimatorDidPause(animator) }
         
         let col = Int(touchPoint.x / (CGFloat(Sizes.BallSize) + Sizes.Inset))
         let row = Int(touchPoint.y / (CGFloat(Sizes.BallSize) + Sizes.Inset))
@@ -177,11 +187,19 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         // show the ball on the field
-        let ballView = arrayBallViews[rowForSet][col]
-        ballView.setPlayer(player: isFirstPlayerTurn ? .first : .second)
+        let currentPlayer:Player = isFirstPlayerTurn ? .first : .second
+        
+        currentTurn = (row: rowForSet, col: col, player: currentPlayer)
+        
+        createAnimation()
+    }
+    
+    fileprivate func setCurrentBall() {
+        let ballView = arrayBallViews[currentTurn.row][currentTurn.col]
+        ballView.setPlayer(player: currentTurn.player)
         
         // check for winner
-        checkForWin(countTurn, row: rowForSet, col: col)
+        checkForWin(countTurn, row: currentTurn.row, col: currentTurn.col)
         
         // change the turn in the game
         isFirstPlayerTurn = !isFirstPlayerTurn
@@ -190,6 +208,40 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
         setTitleInNavigationController()
         countTurn += 1
     }
+    
+    func createAnimation() {
+        isAnimationInProgress = true
+        
+        let ball = arrayBallViews[0][currentTurn.col].ball // get ball with coordinates for falling column
+        
+        // view for falling
+        let ballFall = UIImageView(image: UIImage(named: currentTurn.player.rawValue))
+        ballFall.contentMode = .scaleAspectFill
+        ballFall.frame = CGRect(origin: ball.point, size: CGSize(width: ball.size, height: ball.size))
+        fieldView.addSubview(ballFall)
+
+        let barrierRow = min(currentTurn.row + 1, Sizes.ROWS) - 1
+        let barrierBall = arrayBallViews[barrierRow][currentTurn.col].ball
+        let point  = CGPoint(x: barrierBall.point.x, y: barrierBall.point.y + barrierBall.size)
+        let barrierSize = CGSize(width: barrierBall.size, height: fieldView.bounds.size.height - point.y)
+        let barrier = UIView(frame: CGRect(origin: point, size: barrierSize))
+        fieldView.addSubview(barrier)
+        
+        animator = UIDynamicAnimator(referenceView: fieldView)
+        
+        gravity = UIGravityBehavior(items: [ballFall])
+        gravity.magnitude = 2.8
+        animator.addBehavior(gravity)
+        
+        collision = UICollisionBehavior(items: [ballFall, barrier])
+        collision.translatesReferenceBoundsIntoBoundary = true
+        
+        animator.addBehavior(collision)
+        
+        animator.delegate = self
+        animationArray.append(contentsOf: [ballFall, barrier])
+    }
+    
     
     // find the row which ball should be set
     private func getLastFreeRow(tappedRow: Int, tappedCol: Int) -> Int? {
@@ -315,7 +367,7 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
             title   = "\(winner) player win!"
             text    = "Restart the game?"
         } else {
-            title   =  (isEndOfTheGame ? "Draw!\n" : "") + "Restart the game?"
+            title   =  "Restart the game?"
         }
         
         let alertController = UIAlertController(title: title, message: text, preferredStyle: .alert)
@@ -346,4 +398,17 @@ class BattleFieldViewController: UIViewController, UIGestureRecognizerDelegate {
         setTitleInNavigationController()
     }
 }
+
+extension BattleFieldViewController: UIDynamicAnimatorDelegate {
+    func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+        for view in animationArray {
+            view.removeFromSuperview()
+        }
+        animationArray.removeAll(keepingCapacity: false)
+        isAnimationInProgress = false
+        
+        setCurrentBall()
+    }
+}
+
 
