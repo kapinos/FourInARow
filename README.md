@@ -1,5 +1,6 @@
 # FourInARow
 
+![](https://github.com/kapinos/FourInARow/blob/master/GameDemo.gif)
 ![alt text](https://github.com/kapinos/FourInARow/blob/master/mockup.png)
 
 Implementation of Test Task
